@@ -18,13 +18,9 @@ mac-postgres-setup/
 ├── docker-compose.yaml
 ├── init-db/
 │   └── init.sql
-├── scripts/
-│   ├── install_podman.ps1
-│   ├── create_postgres_container.ps1
-│   └── teardown_postgres_container.ps1
-│   ├── install_podman.sh
-│   ├── create_postgres_container.sh
-│   └── teardown_postgres_container.sh
+├── ── install_podman.sh
+│   ── create_postgres_container.sh
+│   ── teardown_postgres_container.sh
 ```
 
 ## Usage
@@ -44,8 +40,8 @@ cd mac-postgres-setup
 
 Run the installation script to install Podman and Podman Compose:
 
-```powershell
-.\scripts\install_podman_compose.ps1
+```bash
+.install_podman_compose.ps1
 ```
 
 #### For macOS:
@@ -53,7 +49,7 @@ Run the installation script to install Podman and Podman Compose:
 Run the installation script to install Podman and Podman Compose:
 
 ```sh
-./scripts/install_podman.sh
+./.install_podman.sh
 ```
 
 ### 3. Create the PostgreSQL Container
@@ -62,8 +58,8 @@ Run the installation script to install Podman and Podman Compose:
 
 Run the script to create the PostgreSQL container and initialize the database:
 
-```powershell
-.\scripts\create_postgres_container.ps1
+```bash
+.create_postgres_container.ps1
 ```
 
 #### For macOS:
@@ -71,7 +67,7 @@ Run the script to create the PostgreSQL container and initialize the database:
 Run the script to create the PostgreSQL container and initialize the database:
 
 ```sh
-./scripts/create_postgres_container.sh
+./.create_postgres_container.sh
 ```
 
 You will be prompted to enter the PostgreSQL user, password, and database name.
@@ -82,8 +78,8 @@ You will be prompted to enter the PostgreSQL user, password, and database name.
 
 When you are done, you can tear down the PostgreSQL container using the teardown script:
 
-```powershell
-.\scripts\teardown_postgres_container.ps1
+```bash
+.teardown_postgres_container.ps1
 ```
 
 #### For macOS:
@@ -91,7 +87,7 @@ When you are done, you can tear down the PostgreSQL container using the teardown
 When you are done, you can tear down the PostgreSQL container using the teardown script:
 
 ```sh
-./scripts/teardown_postgres_container.sh
+./.teardown_postgres_container.sh
 ```
 
 ## License
