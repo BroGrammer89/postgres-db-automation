@@ -1,75 +1,64 @@
-# Podman PostgreSQL Setup
+# Windows Podman PostgreSQL Setup
 
-This project provides scripts to set up a PostgreSQL database using Podman and Podman Compose. It includes scripts for installing Podman, creating a PostgreSQL container, and tearing down the container. The goal of this project is to standardize development databases across the team, making it easier to onboard new team members and reduce costs by avoiding the need for cloud databases and licenses.
+This directory contains the Windows PowerShell scripts for creating a
+repeatable local PostgreSQL development database. On first initialization,
+PostgreSQL runs `init-db/init.sql`, creates `my_schema.my_table`, and inserts a
+`Sample Data` record.
 
-## Purpose
+## Prerequisites
 
-- **Standardized Development Environment**: Ensures that all team members have a consistent database setup.
-- **Ease of Onboarding**: New team members can quickly get started without needing to know container or Podman/Docker commands.
-- **Cost Reduction**: Avoids the need for cloud databases and licenses by using local containerized databases.
-- **Predefined Schema and Tables**: Provides a predefined schema and tables to ensure consistency across development environments.
+- Windows with PowerShell
+- `winget`
+- Python with `pip`
+- WSL configured for the Podman machine
 
-## Directory Structure
-
-```
-win-podman-postgres-setup/
-│
-├── README.md
-├
-docker-compose.yaml
-├── init-db/
-│   └── init.sql
-├── scripts/
-│   ├── install_podman.ps1
-│   ├── create_postgres_container.ps1
-│   └── teardown_postgres_container.ps1
-```
-
-## Usage
-
-### 1. Clone the Repository
-
-Clone the repository to your local machine:
-
-```sh
-git clone https://github.com/BroGrammer89/win-podman-postgres-setup.git
-cd win-podman-postgres-setup
-```
-
-### 2. Run the Installation Script
-
-Run the installation script to install Podman and Podman Compose:
+## 1. Clone the repository
 
 ```powershell
-.\scripts\install_podman_compose.ps1
+git clone https://github.com/BroGrammer89/postgres-db-automation.git
+Set-Location postgres-db-automation\win-podman-postgres-setup
 ```
-Once the install has run sucessfully  you will see the need to run the install script a second time to initialise the Podman VM with the WSL version installed on your system
-### 3. Create the PostgreSQL Container
 
-Run the script to create the PostgreSQL container and initialize the database:
+## 2. Install and initialize Podman
 
 ```powershell
-.\scripts\create_postgres_container.ps1
+.\install_podman_compose.ps1
 ```
 
-You will be prompted to enter the PostgreSQL user, password, and database name.
+The script installs Podman and `podman-compose` when required, then initializes
+the Podman machine. Depending on the Windows and WSL setup, a new terminal or a
+second run may be needed after installation so the newly installed commands are
+available.
 
-### 4. Tear Down the PostgreSQL Container
-
-When you are done, you can tear down the PostgreSQL container using the teardown script:
+## 3. Create the database
 
 ```powershell
-.\scripts\teardown_postgres_container.ps1
+.\create_postgres_container.ps1
 ```
 
-## License
+Enter the PostgreSQL username, password, and database name when prompted. The
+current Windows script uses normal console input, so use it only in a trusted
+local terminal. After startup, the script intentionally prints the supplied
+password once as part of the local connection summary.
 
-This project is licensed under the MIT License.
+PostgreSQL is exposed at `localhost:5432`. The schema and sample record are
+created automatically during the initial database setup.
+
+## 4. Tear down the environment
+
+```powershell
+.\teardown_postgres_container.ps1
 ```
 
-### Summary
+Teardown removes the project container and PostgreSQL image. It also runs
+`podman volume prune -f` to provide a clean reset. This removes every unused
+Podman volume, including unused volumes belonging to other projects, so review
+your local Podman environment before running it.
 
-This `README.md` file provides clear instructions for users on how to use the repository, as well as an explanation of the project's purpose and benefits. It includes sections on the directory structure, usage instructions, and the project's license. This should help users understand the project and get started quickly.
-### Summary
+## Credential handling
 
-This `README.md` file provides clear instructions for users on how to use the repository, as well as an explanation of the project's purpose and benefits. It includes sections on the directory structure, usage instructions, and the project's license. This should help users understand the project and get started quickly.
+Credentials are supplied at runtime and are not written to this repository or
+to a local `.env` file by these scripts. They are passed through the current
+process environment to Podman Compose and remain available in the local
+container configuration for that container's lifetime. Treat the final
+connection summary as sensitive terminal output.
