@@ -1,0 +1,8 @@
+# Local credentials and runtime environment files
+.git-credentials*
+.env
+.env.*
+!.env.example
+
+# Operating-system metadata
+.DS_Store
